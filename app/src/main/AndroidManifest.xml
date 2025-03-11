@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,46 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="tomain"
+                    android:scheme="mysuperapp" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".SecondActivity"
+            android:exported="true"
+            android:label="Second Activity">
+
+            <!-- Показываюю вторую иконку в лаунчере -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep link обработка -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="test"
+                    android:scheme="mysuperapp" />
+            </intent-filter>
+        </activity> <!-- Бесполезно надо динамически добавлять :( -->
+        <receiver
+            android:name=".NetworkReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
