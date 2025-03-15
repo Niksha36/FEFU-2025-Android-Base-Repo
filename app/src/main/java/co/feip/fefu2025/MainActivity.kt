@@ -1,47 +1,44 @@
 package co.feip.fefu2025
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import co.feip.fefu2025.ui.theme.FEFU2025AndroidBaseRepoTheme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import co.feip.fefu2025.ui.Constants.programmingLanguages
+import co.feip.fefu2025.ui.CustomLayout
+import co.feip.fefu2025.ui.CustomProgLanguageView
+import kotlin.random.Random
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            FEFU2025AndroidBaseRepoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "FEIP",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        val button = findViewById<Button>(R.id.addNewLanguage)
+        button.setOnClickListener {
+            addCustomProgrammingLanguage()
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FEFU2025AndroidBaseRepoTheme {
-        Greeting("Android")
+    private fun addCustomProgrammingLanguage() {
+        val customLayout = findViewById<CustomLayout>(R.id.customLayout)
+        val newLanguageView = CustomProgLanguageView(this).apply {
+            setItem(
+                programmingLanguages.random(), android.graphics.Color.argb(
+                    255,
+                    Random.nextInt(256),
+                    Random.nextInt(256),
+                    Random.nextInt(256)
+                ), Random.nextFloat() * 100
+            )
+        }
+        customLayout.addView(newLanguageView)
     }
 }
